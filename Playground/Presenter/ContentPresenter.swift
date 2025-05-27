@@ -2,18 +2,14 @@ import Foundation
 
 protocol ContentPresenterProtocol: ObservableObject {
     var contents: [ContentEntity] { get }
-    var isAlertPresented: Bool { get }
-    var alertTitle: String { get }
-    var alertMessage: String { get }
+    var alertState: AlertState? { get }
     func load()
     func presentAlert(title: String, message: String)
 }
 
 class ContentPresenter: ContentPresenterProtocol {
     @Published private(set) var contents: [ContentEntity] = []
-    @Published var isAlertPresented: Bool = false
-    @Published var alertTitle: String = ""
-    @Published var alertMessage: String = ""
+    @Published var alertState: AlertState? = nil
     private let useCase: ContentUseCaseProtocol
 
     init(useCase: ContentUseCaseProtocol) {
@@ -25,8 +21,6 @@ class ContentPresenter: ContentPresenterProtocol {
     }
 
     func presentAlert(title: String, message: String) {
-        alertTitle = title
-        alertMessage = message
-        isAlertPresented = true
+        alertState = AlertState(title: title, message: message)
     }
 }

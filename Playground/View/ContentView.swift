@@ -8,7 +8,6 @@ struct ContentView: View {
         NavigationView {
             List(presenter.contents) { content in
                 Button(action: {
-                    // 例: アラートを表示したい場合
                     presenter.presentAlert(title: "アラート", message: "\(content.title) を選択しました")
                     // router.navigateToDetail(content: content) // 画面遷移は必要に応じて
                 }) {
@@ -22,8 +21,8 @@ struct ContentView: View {
             .onAppear {
                 presenter.load()
             }
-            .alert(isPresented: $presenter.isAlertPresented) {
-                Alert(title: Text(presenter.alertTitle), message: Text(presenter.alertMessage), dismissButton: .default(Text("OK")))
+            .alert(item: $presenter.alertState) { alertState in
+                Alert(title: Text(alertState.title), message: Text(alertState.message), dismissButton: .default(Text("OK")))
             }
         }
     }
